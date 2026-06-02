@@ -7,6 +7,10 @@ public class Course {
     private int midtermGrade;
     private int finalGrade;
 
+    public String getCourseCode() {
+        return courseCode;
+    }
+
     public Course(String courseCode, int midtermGrade, int finalGrade) {
         this.courseCode = courseCode;
         this.midtermGrade = midtermGrade;

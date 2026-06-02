@@ -89,12 +89,12 @@ public abstract class Student {
         return found;
     }
 
-    public void addExtracirricular(Extracurricular extracurricular) {
+    public void addExtracurricular(Extracurricular extracurricular) {
         extracurriculars.add(extracurricular);
     }
 
-    public boolean removeExtracirriculars(String extracirricularName) {
-        return extracurriculars.removeIf(ec -> ec.compareName(extracirricularName) == 0);
+    public boolean removeExtracurriculars(String extracurricularName) {
+        return extracurriculars.removeIf(ec -> ec.compareName(extracurricularName) == 0);
     }
 
     public void addApplication(Application application) {
