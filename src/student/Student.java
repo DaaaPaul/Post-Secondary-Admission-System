@@ -89,6 +89,15 @@ public abstract class Student {
         return found;
     }
 
+    public Course searchCourseByCourseCode(String code) {
+        for (Course c : courses) {
+            if (c.getCourseCode().equals(code)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
     public void addExtracurricular(Extracurricular extracurricular) {
         extracurriculars.add(extracurricular);
     }
