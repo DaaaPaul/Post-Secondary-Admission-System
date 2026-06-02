@@ -77,6 +77,19 @@ public class Program {
     }
 
     public boolean meetRequirements(Student s) {
+        if (s.getAverage() < requiredAverage) {
+            return false;
+        }
+        if (s.getPoints() < requiredPoints) {
+            return false;
+        }
+
+        for (String courseCode : requiredCourses) {
+            if (s.searchCourseByCourseCode(courseCode) == null) {
+                return false;
+            }
+        }
+        
         return true;
     }
 
