@@ -19,26 +19,24 @@ public abstract class Student {
 
     @Override
     public String toString() {
-        String info = 
-            "id: " + id + '\n' +
-            "name: " + name + '\n';
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(id); sb.append('\n');
+        sb.append(name); sb.append('\n');
 
         for(Course course : courses) {
-            info += course;
-            info += '\n';
+            sb.append(course);
         }
 
         for(Extracurricular extracurricular : extracurriculars) {
-            info += extracurricular;
-            info += '\n';
+            sb.append(extracurricular);
         }
 
         for(Application application : applications) {
-            info += application;
-            info += '\n';
+            sb.append(application);
         }
 
-        return info;
+        return sb.toString();
     }
 
     public void addCourse(Course course) {

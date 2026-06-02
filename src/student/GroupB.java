@@ -14,9 +14,13 @@ public class GroupB extends Student {
 
     @Override
     public String toString() {
-        return 
-            super.toString() +
-            highschoolName + '\n' +
-            birthday;
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(super.toString());
+        
+        sb.append(highschoolName); sb.append('\n');
+        sb.append(birthday); sb.append('\n');
+
+        return sb.toString();
     }
 }

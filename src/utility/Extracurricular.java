@@ -18,10 +18,13 @@ public class Extracurricular {
 
     @Override
     public String toString() {
-        return 
-            name + '\n' + 
-            begin + '\n' +
-            end;
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(name); sb.append('\n');
+        sb.append(begin); sb.append('\n');
+        sb.append(end); sb.append('\n');
+
+        return sb.toString();
     }
 
     public int getPoints() {

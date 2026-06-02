@@ -33,11 +33,14 @@ public class Application {
 
     @Override
     public String toString() {
-        return 
-            id + '\n' +
-            studentId + '\n' + 
-            postSecondaryId + '\n' +
-            programId + '\n' +
-            status.name();
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append(id); sb.append('\n');
+        sb.append(studentId); sb.append('\n');
+        sb.append(postSecondaryId); sb.append('\n');
+        sb.append(programId); sb.append('\n');
+        sb.append(status.name()); sb.append('\n');
+
+        return sb.toString();
     }
 }

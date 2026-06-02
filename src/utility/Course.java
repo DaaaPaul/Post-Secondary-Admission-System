@@ -43,9 +43,12 @@ public class Course {
 
     @Override
     public String toString() {
-        return 
-            courseCode + '\n' +
-            "midterm: " + midtermGrade + '\n' +
-            "final: " + finalGrade;
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(courseCode); sb.append('\n');
+        sb.append(midtermGrade); sb.append('\n');
+        sb.append(finalGrade); sb.append('\n');
+
+        return sb.toString();
     }
 }

@@ -10,6 +10,12 @@ public class GroupA extends Student {
 
     @Override
     public String toString() {
-        return super.toString() + eduNum;
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(super.toString());
+
+        sb.append(eduNum); sb.append('\n');
+
+        return sb.toString();
     }
 }
