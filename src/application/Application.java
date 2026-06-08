@@ -1,21 +1,13 @@
 package src.application;
 
 public class Application {
-    public enum Status {
-        REJECTED,
-        DEFERRED,
-        PENDING,
-        WAITLISTED,
-        ACCEPTED
-    }
-
     private int id;
     private int studentId;
     private int postSecondaryId;
     private int programId;
-    private Status status;
+    private String status;
 
-    public Application(int id, int studentId, int postSecondaryId, int programId, Status status) {
+    public Application(int id, int studentId, int postSecondaryId, int programId, String status) {
         this.id = id;
         this.studentId = studentId;
         this.postSecondaryId = postSecondaryId;
@@ -23,11 +15,11 @@ public class Application {
         this.status = status;
     }
 
-    void setStatus(Status newStatus) {
+    void setStatus(String newStatus) {
         status = newStatus;
     }
 
-    Status getStatus() {
+    String getStatus() {
         return status;
     }
 
@@ -39,7 +31,7 @@ public class Application {
         sb.append(studentId); sb.append('\n');
         sb.append(postSecondaryId); sb.append('\n');
         sb.append(programId); sb.append('\n');
-        sb.append(status.name()); sb.append('\n');
+        sb.append(status); sb.append('\n');
 
         return sb.toString();
     }
