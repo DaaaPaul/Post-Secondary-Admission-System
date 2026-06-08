@@ -23,6 +23,10 @@ public class Application {
         return status;
     }
 
+    public int compareId(int id) {
+        return Integer.compare(this.id, id);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
