@@ -5,6 +5,7 @@ import java.io.*;
 import src.student.Student;
 import src.postSecondary.PostSecondary;
 import src.application.Application;
+import src.postSecondary.University;
 
 public class AdmissionSystem {
     private ArrayList<Student> students;
@@ -12,13 +13,11 @@ public class AdmissionSystem {
     private ArrayList<Application> applications;
 
     public AdmissionSystem() {
-        students = new ArrayList();
-        postSecondarys = new ArrayList();
-        applications = new ArrayList();
+        loadData();
     }
 
     public void loadData() {
-        ArrayList<File> applicationData = txtFilesUnder(new File("data/applications"));
+        applications = getApplications(txtFilesUnder(new File("data/applications")).getFirst());
         
         ArrayList<File> universityData = txtFilesUnder(new File("data/postSecondarys/universities"));
         ArrayList<File> collegeData = txtFilesUnder(new File("data/postSecondarys/colleges"));
@@ -27,7 +26,7 @@ public class AdmissionSystem {
         ArrayList<File> groupBData = txtFilesUnder(new File("data/students/groupB"));
     }
 
-    private static ArrayList<Application> retrieveApplications(File data) {
+    private static ArrayList<Application> getApplications(File data) {
         ArrayList<Application> applications = new ArrayList();
         
         try {
@@ -44,10 +43,36 @@ public class AdmissionSystem {
                 ));
             }
         } catch (IOException iox) {
-            System.err.println("retrieveApplications: IOException");
+            System.err.println("getApplications: IOException");
         }
 
         return applications;
+    }
+
+    private static ArrayList<University> getUniversitys(ArrayList<File> data) {
+        ArrayList<University> universitys = new ArrayList();
+        BufferedReader in;
+
+        try {
+            for(File file : data) {
+                in = new BufferedReader(new FileReader(file));
+                University university;
+
+                if(file.getName().equals("postSecondary.txt")) {
+                    university = new University(
+
+                    );
+                } else {
+
+                }
+            }
+
+
+        } catch (IOException iox) {
+            System.err.println("getUniversitys: IOException");
+        }
+
+        return universitys;
     }
 
     public void saveData() {
