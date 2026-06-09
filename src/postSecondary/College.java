@@ -1,6 +1,7 @@
 package src.postSecondary;
 
 import src.application.*;
+import src.student.*;
 
 public class College extends PostSecondary {
 
@@ -29,9 +30,35 @@ public class College extends PostSecondary {
         this.graduateEmploymentRate = graduateEmploymentRate;
     }
 
+
+
+
+
+    @Override
     public boolean evaluateApplication(Application a) {
-        return true;
+
+        Student student = a.getStudent();
+        Program program = a.getProgram();
+
+        for (String course : program.getRequiredCourses()) {
+            if (student.searchCourseByCourseCode(course) == null) return false;
+        }
+
+        if (student.getAverage() >= program.getRequiredAverage()) {
+            a.setStatus("ACCEPTED");
+            return true;
+
+        } else {
+            a.setStatus("REJECTED");
+            return false;
+        }
+
     }
+
+
+
+
+
 
     @Override
     public String toString() {

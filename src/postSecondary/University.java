@@ -1,6 +1,7 @@
 package src.postSecondary;
 
 import src.application.*;
+import src.student.Student;
 
 public class University extends PostSecondary {
 
@@ -13,8 +14,28 @@ public class University extends PostSecondary {
         this.qsRanking = qsRanking;
     }
 
+    @Override
     public boolean evaluateApplication(Application a) {
-        return true;
+
+        Student student = a.getStudent();
+        Program program = a.getProgram();
+
+        for (String course : program.getRequiredCourses()) {
+            if (student.searchCourseByCourseCode(course) == null) return false;
+        }
+
+        if (
+                student.getAverage() >= program.getRequiredAverage() &&
+                student.getPoints() >= program.getRequiredPoints()
+        ) {
+            a.setStatus("ACCEPTED");
+            return true;
+
+        } else {
+            a.setStatus("REJECTED");
+            return false;
+        }
+
     }
 
     @Override

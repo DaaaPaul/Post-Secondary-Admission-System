@@ -3,12 +3,12 @@ package src.student;
 import java.time.LocalDate;
 
 public class GroupB extends Student {
-    private String highschoolName;
+    private String highSchoolName;
     private LocalDate birthday;
 
-    public GroupB(int id, String name, String highschoolName, LocalDate birthday) {
+    public GroupB(int id, String name, String highSchoolName, LocalDate birthday) {
         super(id, name);
-        this.highschoolName = highschoolName;
+        this.highSchoolName = highSchoolName;
         this.birthday = birthday;
     }
 
@@ -18,7 +18,7 @@ public class GroupB extends Student {
 
         sb.append(super.toString());
         
-        sb.append(highschoolName); sb.append('\n');
+        sb.append(highSchoolName); sb.append('\n');
         sb.append(birthday); sb.append('\n');
 
         return sb.toString();

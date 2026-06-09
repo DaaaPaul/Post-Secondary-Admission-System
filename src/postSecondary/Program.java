@@ -17,23 +17,18 @@ public class Program {
     public int getId() {
         return id;
     }
-
     public int getInstitutionId() {
         return institutionId;
     }
-
     public String getName() {
         return name;
     }
-
     public ArrayList<String> getRequiredCourses() {
         return requiredCourses;
     }
-
     public double getRequiredAverage() {
         return requiredAverage;
     }
-
     public int getRequiredPoints() {
         return requiredPoints;
     }
@@ -41,19 +36,15 @@ public class Program {
     public void setId(int id) {
         this.id = id;
     }
-
     public void setInstitutionId(int institutionId) {
         this.institutionId = institutionId;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public void setRequiredAverage(double requiredAverage) {
         this.requiredAverage = requiredAverage;
     }
-
     public void setRequiredPoints(int requiredPoints) {
         this.requiredPoints = requiredPoints;
     }
@@ -76,6 +67,12 @@ public class Program {
         return requiredCourses.remove(courseCode);
     }
 
+
+
+
+
+
+    /*
     public boolean meetRequirements(Student s) {
         if (s.getAverage() < requiredAverage) {
             return false;
@@ -92,6 +89,11 @@ public class Program {
         
         return true;
     }
+     */
+
+
+
+
 
     @Override
     public String toString() {

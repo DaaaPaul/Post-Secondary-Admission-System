@@ -27,6 +27,12 @@ public class AdmissionSystem {
         ArrayList<File> groupBData = txtFilesUnder(new File("data/students/groupB"));
     }
 
+
+
+
+
+
+    /*
     private static ArrayList<Application> retrieveApplications(File data) {
         ArrayList<Application> applications = new ArrayList();
         
@@ -49,6 +55,12 @@ public class AdmissionSystem {
 
         return applications;
     }
+     */
+
+
+
+
+
 
     public void saveData() {
 
