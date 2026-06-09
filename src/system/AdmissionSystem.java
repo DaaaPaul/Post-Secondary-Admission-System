@@ -79,55 +79,55 @@ public class AdmissionSystem {
 
     }
 
-    void addStudent(Student student) {
+    public void addStudent(Student student) {
 
     }
 
-    boolean removeStudent(int id) {
+    public boolean removeStudent(int id) {
 
     }
 
-    void addPostSecondary(PostSecondary postSecondary) {
+    public void addPostSecondary(PostSecondary postSecondary) {
 
     }
 
-    boolean removePostSecondary(int id) {
+    public boolean removePostSecondary(int id) {
 
     }
 
-    void createApplication() {
+    public void createApplication() {
 
     }
 
-    Student searchStudentById(int id) {
+    public Student searchStudentById(int id) {
 
     }
 
-    Student searchStudentByName(String name) {
+    public Student searchStudentByName(String name) {
 
     }
 
-    PostSecondary searchPostSecondaryById(int id) {
+    public PostSecondary searchPostSecondaryById(int id) {
 
     }
 
-    PostSecondary searchPostSecondaryByName(String name) {
+    public PostSecondary searchPostSecondaryByName(String name) {
 
     }
 
-    Application searchApplicationById(int id) {
+    public Application searchApplicationById(int id) {
 
     }
 
-    Application searchApplicationByStudent(int studentId) {
+    public Application searchApplicationByStudent(int studentId) {
 
     }
 
-    Application searchApplicationByProgram(int programId) {
+    public Application searchApplicationByProgram(int programId) {
 
     }
 
-    void sortStudentsByMerit() {
+    public void sortStudentsByMerit() {
 
     }
 
