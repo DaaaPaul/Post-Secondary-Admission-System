@@ -4,7 +4,6 @@ import src.application.*;
 import src.student.Student;
 
 public class University extends PostSecondary {
-
     private int annualResearchFunding;
     private int qsRanking;
 

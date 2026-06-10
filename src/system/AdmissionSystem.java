@@ -2,10 +2,14 @@ package src.system;
 
 import java.util.ArrayList;
 import java.io.*;
+import src.postSecondary.Program;
 import src.student.Student;
+import src.student.GroupA;
+import src.student.GroupB;
 import src.postSecondary.PostSecondary;
-import src.application.Application;
 import src.postSecondary.University;
+import src.postSecondary.College;
+import src.application.Application;
 
 public class AdmissionSystem {
     private ArrayList<Student> students;
@@ -13,66 +17,130 @@ public class AdmissionSystem {
     private ArrayList<Application> applications;
 
     public AdmissionSystem() {
-        loadData();
-    }
-
-    public void loadData() {
-        applications = getApplications(txtFilesUnder(new File("data/applications")).getFirst());
-        
         ArrayList<File> universityData = txtFilesUnder(new File("data/postSecondarys/universities"));
         ArrayList<File> collegeData = txtFilesUnder(new File("data/postSecondarys/colleges"));
+        postSecondarys.addAll(getUniversitys(universityData));
+        postSecondarys.addAll(getColleges(collegeData));
 
         ArrayList<File> groupAData = txtFilesUnder(new File("data/students/groupA"));
         ArrayList<File> groupBData = txtFilesUnder(new File("data/students/groupB"));
+        students.addAll(getGroupAs(groupAData));
+        students.addAll(getGroupBs(groupBData));
+
+        ArrayList<File> applicationData = txtFilesUnder(new File("data/applications"));
     }
 
-    private static ArrayList<Application> getApplications(File data) {
-        ArrayList<Application> applications = new ArrayList();
-        
-        try {
-            BufferedReader in = new BufferedReader(new FileReader(data));
+    private static ArrayList<GroupA> getGroupAs(ArrayList<File> data) { 
 
-            String first;
-            while((first = in.readLine()) != null) {
-                applications.add(new Application(
-                    Integer.parseInt(first),
-                    Integer.parseInt(in.readLine()),
-                    Integer.parseInt(in.readLine()),
-                    Integer.parseInt(in.readLine()),
-                    in.readLine()
-                ));
+    }
+
+    private static ArrayList<GroupB> getGroupBs(ArrayList<File> data) { 
+
+    }
+
+    private static ArrayList<College> getColleges(ArrayList<File> data) {
+        ArrayList<College> colleges = new ArrayList();
+        BufferedReader fin;
+
+        try {
+            int i = 0;
+
+            while(i < data.size()) {
+                fin = new BufferedReader(new FileReader(data.get(i)));
+
+                College college = new College(
+                    Integer.parseInt(fin.readLine()),
+                    fin.readLine(),
+                    Boolean.parseBoolean(fin.readLine()),
+                    Double.parseDouble(fin.readLine())
+                );
+
+                while(!data.get(++i).getName().equals("college.txt")) {
+                    fin = new BufferedReader(new FileReader(data.get(i)));
+
+                    Program program = new Program(
+                        Integer.parseInt(fin.readLine()),
+                        college.getId(),
+                        fin.readLine(),
+                        Double.parseDouble(fin.readLine()),
+                        Program.NULL_REQUIRED_POINTS
+                    );
+
+                    String line;
+                    while((line = fin.readLine()) != null) {
+                        program.addRequiredCourse(line);
+                    }
+
+                    college.addProgram(program);
+                }
+
+                colleges.add(college);
             }
         } catch (IOException iox) {
-            System.err.println("getApplications: IOException");
+            System.err.println("getColleges: IOException: " + iox);
         }
 
-        return applications;
+        return colleges;
     }
 
     private static ArrayList<University> getUniversitys(ArrayList<File> data) {
-        ArrayList<University> universitys = new ArrayList();
-        BufferedReader in;
+        ArrayList<University> universities = new ArrayList();
+        BufferedReader fin;
 
         try {
-            for(File file : data) {
-                in = new BufferedReader(new FileReader(file));
-                University university;
+            int i = 0;
 
-                if(file.getName().equals("postSecondary.txt")) {
-                    university = new University(
+            while(i < data.size()) {
+                fin = new BufferedReader(new FileReader(data.get(i)));
 
+                University university = new University(
+                    Integer.parseInt(fin.readLine()),
+                    fin.readLine(),
+                    Integer.parseInt(fin.readLine()),
+                    Integer.parseInt(fin.readLine())
+                );
+
+                while(!data.get(++i).getName().equals("university.txt")) {
+                    fin = new BufferedReader(new FileReader(data.get(i)));
+
+                    Program program = new Program(
+                        Integer.parseInt(fin.readLine()),
+                        university.getId(),
+                        fin.readLine(),
+                        Double.parseDouble(fin.readLine()),
+                        Integer.parseInt(fin.readLine())
                     );
-                } else {
 
+                    String line;
+                    while((line = fin.readLine()) != null) {
+                        program.addRequiredCourse(line);
+                    }
+
+                    university.addProgram(program);
                 }
+
+                universities.add(university);
             }
-
-
         } catch (IOException iox) {
-            System.err.println("getUniversitys: IOException");
+            System.err.println("getUniversitys: IOException: " + iox);
         }
 
-        return universitys;
+        return universities;
+    }
+
+    private static ArrayList<File> getApplications(ArrayList<File> applicationData) {
+        ArrayList<Application> applications = new ArrayList();
+        BufferedReader fin;
+
+        try {
+            for(File file : applicationData) {
+                fin = new BufferedReader(new FileReader(file));
+
+
+            }
+        } catch (IOException iox) {
+            System.err.println("getApplications: IOException: " + iox);
+        }
     }
 
     public void saveData() {

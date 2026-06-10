@@ -5,12 +5,15 @@ import src.application.*;
 import java.util.ArrayList;
 
 public abstract class PostSecondary {
-
     private int id;
     private String name;
 
     private ArrayList<Program> programs;
     private ArrayList<Application> applications;
+
+    public int getId() {
+        return id;
+    }
 
     public void setName(String name) {
         this.name = name;
