@@ -1,15 +1,13 @@
 package src.system;
 
-import java.util.ArrayList;
 import java.io.*;
-import src.postSecondary.Program;
-import src.student.Student;
-import src.student.GroupA;
-import src.student.GroupB;
-import src.postSecondary.PostSecondary;
-import src.postSecondary.University;
-import src.postSecondary.College;
-import src.application.Application;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import src.student.*;
+import src.postSecondary.*;
+import src.application.*;
+import src.utility.*;
+import java.util.ArrayList;
 
 public class AdmissionSystem {
     private ArrayList<Student> students;
@@ -28,119 +26,7 @@ public class AdmissionSystem {
         students.addAll(getGroupBs(groupBData));
 
         ArrayList<File> applicationData = txtFilesUnder(new File("data/applications"));
-    }
-
-    private static ArrayList<GroupA> getGroupAs(ArrayList<File> data) { 
-
-    }
-
-    private static ArrayList<GroupB> getGroupBs(ArrayList<File> data) { 
-
-    }
-
-    private static ArrayList<College> getColleges(ArrayList<File> data) {
-        ArrayList<College> colleges = new ArrayList();
-        BufferedReader fin;
-
-        try {
-            int i = 0;
-
-            while(i < data.size()) {
-                fin = new BufferedReader(new FileReader(data.get(i)));
-
-                College college = new College(
-                    Integer.parseInt(fin.readLine()),
-                    fin.readLine(),
-                    Boolean.parseBoolean(fin.readLine()),
-                    Double.parseDouble(fin.readLine())
-                );
-
-                while(!data.get(++i).getName().equals("college.txt")) {
-                    fin = new BufferedReader(new FileReader(data.get(i)));
-
-                    Program program = new Program(
-                        Integer.parseInt(fin.readLine()),
-                        college.getId(),
-                        fin.readLine(),
-                        Double.parseDouble(fin.readLine()),
-                        Program.NULL_REQUIRED_POINTS
-                    );
-
-                    String line;
-                    while((line = fin.readLine()) != null) {
-                        program.addRequiredCourse(line);
-                    }
-
-                    college.addProgram(program);
-                }
-
-                colleges.add(college);
-            }
-        } catch (IOException iox) {
-            System.err.println("getColleges: IOException: " + iox);
-        }
-
-        return colleges;
-    }
-
-    private static ArrayList<University> getUniversitys(ArrayList<File> data) {
-        ArrayList<University> universities = new ArrayList();
-        BufferedReader fin;
-
-        try {
-            int i = 0;
-
-            while(i < data.size()) {
-                fin = new BufferedReader(new FileReader(data.get(i)));
-
-                University university = new University(
-                    Integer.parseInt(fin.readLine()),
-                    fin.readLine(),
-                    Integer.parseInt(fin.readLine()),
-                    Integer.parseInt(fin.readLine())
-                );
-
-                while(!data.get(++i).getName().equals("university.txt")) {
-                    fin = new BufferedReader(new FileReader(data.get(i)));
-
-                    Program program = new Program(
-                        Integer.parseInt(fin.readLine()),
-                        university.getId(),
-                        fin.readLine(),
-                        Double.parseDouble(fin.readLine()),
-                        Integer.parseInt(fin.readLine())
-                    );
-
-                    String line;
-                    while((line = fin.readLine()) != null) {
-                        program.addRequiredCourse(line);
-                    }
-
-                    university.addProgram(program);
-                }
-
-                universities.add(university);
-            }
-        } catch (IOException iox) {
-            System.err.println("getUniversitys: IOException: " + iox);
-        }
-
-        return universities;
-    }
-
-    private static ArrayList<File> getApplications(ArrayList<File> applicationData) {
-        ArrayList<Application> applications = new ArrayList();
-        BufferedReader fin;
-
-        try {
-            for(File file : applicationData) {
-                fin = new BufferedReader(new FileReader(file));
-
-
-            }
-        } catch (IOException iox) {
-            System.err.println("getApplications: IOException: " + iox);
-        }
+        storeApplications(applicationData);
     }
 
     public void saveData() {
@@ -222,5 +108,221 @@ public class AdmissionSystem {
         }
 
         return collected;
+    }
+
+    private static ArrayList<University> getUniversitys(ArrayList<File> data) {
+        ArrayList<University> universities = new ArrayList();
+        BufferedReader fin;
+
+        try {
+            int i = 0;
+
+            while(i < data.size()) {
+                fin = new BufferedReader(new FileReader(data.get(i)));
+
+                University university = new University(
+                    Integer.parseInt(fin.readLine()),
+                    fin.readLine(),
+                    Integer.parseInt(fin.readLine()),
+                    Integer.parseInt(fin.readLine())
+                );
+
+                while(!data.get(++i).getName().equals("university.txt")) {
+                    fin = new BufferedReader(new FileReader(data.get(i)));
+
+                    Program program = new Program(
+                        Integer.parseInt(fin.readLine()),
+                        university.getId(),
+                        fin.readLine(),
+                        Double.parseDouble(fin.readLine()),
+                        Integer.parseInt(fin.readLine())
+                    );
+
+                    String line;
+                    while((line = fin.readLine()) != null) {
+                        program.addRequiredCourse(line);
+                    }
+
+                    university.addProgram(program);
+                }
+
+                universities.add(university);
+            }
+        } catch (IOException iox) {
+            System.err.println("getUniversitys: IOException: " + iox);
+        }
+
+        return universities;
+    }
+
+    private static ArrayList<College> getColleges(ArrayList<File> data) {
+        ArrayList<College> colleges = new ArrayList();
+        BufferedReader fin;
+
+        try {
+            int i = 0;
+
+            while(i < data.size()) {
+                fin = new BufferedReader(new FileReader(data.get(i)));
+
+                College college = new College(
+                    Integer.parseInt(fin.readLine()),
+                    fin.readLine(),
+                    Boolean.parseBoolean(fin.readLine()),
+                    Double.parseDouble(fin.readLine())
+                );
+
+                while(!data.get(++i).getName().equals("college.txt")) {
+                    fin = new BufferedReader(new FileReader(data.get(i)));
+
+                    Program program = new Program(
+                        Integer.parseInt(fin.readLine()),
+                        college.getId(),
+                        fin.readLine(),
+                        Double.parseDouble(fin.readLine()),
+                        Program.NULL_REQUIRED_POINTS
+                    );
+
+                    String line;
+                    while((line = fin.readLine()) != null) {
+                        program.addRequiredCourse(line);
+                    }
+
+                    college.addProgram(program);
+                }
+
+                colleges.add(college);
+            }
+        } catch (IOException iox) {
+            System.err.println("getColleges: IOException: " + iox);
+        }
+
+        return colleges;
+    }
+
+    private static ArrayList<GroupA> getGroupAs(ArrayList<File> data) { 
+        ArrayList<GroupA> groupAs = new ArrayList();
+        BufferedReader fin;
+
+        try {
+            for(File file : data) {
+                fin = new BufferedReader(new FileReader(file));
+
+                GroupA groupA = new GroupA(
+                    Integer.parseInt(fin.readLine()),
+                    fin.readLine(),
+                    Integer.parseInt(fin.readLine())
+                );
+
+                addCoursesAndExtracirriculars(groupA, fin);
+
+                groupAs.add(groupA);
+            }
+        } catch (IOException iox) {
+            System.err.println("getGroupAs: IOException: " + iox);
+        }
+
+        return groupAs;
+    }
+
+    private static ArrayList<GroupB> getGroupBs(ArrayList<File> data) { 
+        ArrayList<GroupB> groupBs = new ArrayList();
+        BufferedReader fin;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
+        try {
+            for(File file : data) {
+                fin = new BufferedReader(new FileReader(file));
+
+                GroupB groupB = new GroupB(
+                    Integer.parseInt(fin.readLine()),
+                    fin.readLine(),
+                    fin.readLine(),
+                    LocalDate.parse(fin.readLine(), formatter)
+                );
+
+                addCoursesAndExtracirriculars(groupB, fin);
+
+                groupBs.add(groupB);
+            }
+        } catch (IOException iox) {
+            System.err.println("getGroupBs: IOException: " + iox);
+        }
+
+        return groupBs;
+    }
+
+    private static void addCoursesAndExtracirriculars(Student student, BufferedReader fin) {
+        try {
+            String line;
+            while((line = fin.readLine()) != null) {
+                String[] items = line.split(" ");
+
+                if(Character.isLetter(line.charAt(0))) {
+                    Course course = null;
+
+                    switch(items.length) {
+                        case 1:
+                            course = new Course(items[0], Course.NULL_GRADE, Course.NULL_GRADE);
+                            break;
+                        case 2:
+                            course = new Course(items[0], Integer.parseInt(items[1]), Course.NULL_GRADE);
+                            break;
+                        case 3:
+                            course = new Course(items[0], Integer.parseInt(items[1]), Integer.parseInt(items[2]));
+                            break;
+                        default:
+                            System.err.println("addCoursesAndExtracirriculars: invalid string items on line");
+                            break;
+                    }
+
+                    student.addCourse(course);
+                } else if(Character.isDigit(line.charAt(0))) {
+                    Extracurricular ec = null;
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
+                    switch(items.length) {
+                        case 2:
+                            ec = new Extracurricular(items[0], LocalDate.parse(items[1], formatter), Extracurricular.NULL_DATE);
+                            break;
+                        case 3:
+                            ec = new Extracurricular(items[0], LocalDate.parse(items[1], formatter), LocalDate.parse(items[2], formatter));
+                            break;
+                        default:
+                            System.err.println("addCoursesAndExtracirriculars: invalid string items on line");
+                            break;
+                    }
+
+                    student.addExtracurricular(ec);
+                } else {
+                    System.err.println("addCoursesAndExtracirriculars: character is not letter nor digit");
+                }
+            }
+        } catch (IOException iox) {
+            System.err.println("addCoursesAndExtracirriculars: IOException: " + iox);
+        }
+    }
+
+    private void storeApplications(ArrayList<File> applicationData) {
+        ArrayList<Application> applications = new ArrayList();
+        BufferedReader fin;
+
+        try {
+            for(File file : applicationData) {
+                fin = new BufferedReader(new FileReader(file));
+
+                int id = Integer.parseInt(fin.readLine());
+                Student student = searchStudentById(Integer.parseInt(fin.readLine()));
+                PostSecondary institution = searchPostSecondaryById(Integer.parseInt(fin.readLine()));
+                Program program = institution.searchProgramById(Integer.parseInt(fin.readLine()));
+                String status = fin.readLine();
+
+                applications.add(new Application(id, student, institution, program, status));
+            }
+        } catch (IOException iox) {
+            System.err.println("getApplications: IOException: " + iox);
+        }
+
+        this.applications = applications;
     }
 }
