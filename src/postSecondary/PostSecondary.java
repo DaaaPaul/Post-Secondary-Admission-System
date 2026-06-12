@@ -11,6 +11,16 @@ public abstract class PostSecondary {
     private ArrayList<Program> programs;
     private ArrayList<Application> applications;
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(id); sb.append('\n');
+        sb.append(name); sb.append('\n');
+
+        return sb.toString();
+    }
+
     public int getId() {
         return id;
     }
@@ -111,20 +121,4 @@ public abstract class PostSecondary {
     }
 
     public abstract boolean evaluateApplication(Application a);
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("Institution ID: "); sb.append(id); sb.append("\n");
-        sb.append("Institution Name: "); sb.append(name); sb.append("\n");
-
-        for (Program p : programs) {
-            sb.append("\n");
-            sb.append(p.toString());
-            sb.append("\n");
-        }
-
-        return sb.toString();
-    }
 }

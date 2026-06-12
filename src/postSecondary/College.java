@@ -4,9 +4,13 @@ import src.application.*;
 import src.student.*;
 
 public class College extends PostSecondary {
-
     private boolean offersApprenticeship;
     private double graduateEmploymentRate;
+
+    @Override
+    public String toString() {
+        return super.toString() + offersApprenticeship + '\n' + graduateEmploymentRate;
+    }
 
     public boolean isOffersApprenticeship() {
         return offersApprenticeship;
@@ -59,9 +63,4 @@ public class College extends PostSecondary {
 
 
 
-
-    @Override
-    public String toString() {
-        return "Institution Type: College\n" + super.toString();
-    }
 }

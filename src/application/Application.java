@@ -28,7 +28,9 @@ public class Application {
         this.status = status;
     }
 
-
+    public int getId() {
+        return id;
+    }
 
     public void setStatus(String newStatus) {
         status = newStatus;
@@ -46,17 +48,11 @@ public class Application {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Application ID: "); sb.append(id); sb.append('\n');
-        sb.append("Application Status: "); sb.append(status); sb.append('\n');
-
-        sb.append("\nStudent Information:\n");
-        sb.append(student.toString()); sb.append("\n");
-
-        sb.append("\nInstitution Information:\n");
-        sb.append(institution.toString()); sb.append("\n");
-
-        sb.append("\nProgram Information:\n");
-        sb.append(program.toString()); sb.append("\n");
+        sb.append(id); sb.append('\n');
+        sb.append(student.getId()); sb.append('\n');
+        sb.append(institution.getId()); sb.append('\n');
+        sb.append(program.getId()); sb.append('\n');
+        sb.append(status); sb.append('\n');
 
         return sb.toString();
     }

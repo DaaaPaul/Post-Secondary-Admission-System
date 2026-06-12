@@ -14,6 +14,11 @@ public class University extends PostSecondary {
     }
 
     @Override
+    public String toString() {
+        return super.toString() + annualResearchFunding + '\n' + qsRanking;
+    }
+
+    @Override
     public boolean evaluateApplication(Application a) {
 
         Student student = a.getStudent();
@@ -35,10 +40,5 @@ public class University extends PostSecondary {
             return false;
         }
 
-    }
-
-    @Override
-    public String toString() {
-        return "Institution Type: University\n" + super.toString();
     }
 }

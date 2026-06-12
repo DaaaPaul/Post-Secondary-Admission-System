@@ -45,9 +45,13 @@ public class Course {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(courseCode); sb.append('\n');
-        sb.append(midtermGrade); sb.append('\n');
-        sb.append(finalGrade); sb.append('\n');
+        sb.append(courseCode); 
+        if(midtermGrade != NULL_GRADE) {
+            sb.append(' '); sb.append(midtermGrade);
+        }
+        if(finalGrade != NULL_GRADE) {
+            sb.append(' '); sb.append(finalGrade);
+        }
 
         return sb.toString();
     }

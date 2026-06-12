@@ -2,7 +2,6 @@ package src.system;
 
 import java.io.*;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import src.student.*;
 import src.postSecondary.*;
 import src.application.*;
@@ -30,7 +29,9 @@ public class AdmissionSystem {
     }
 
     public void saveData() {
-
+        saveStudentData();
+        saveInstitutionData();
+        saveApplicationData();
     }
 
     public void addStudent(Student student) {
@@ -228,7 +229,6 @@ public class AdmissionSystem {
     private static ArrayList<GroupB> getGroupBs(ArrayList<File> data) { 
         ArrayList<GroupB> groupBs = new ArrayList();
         BufferedReader fin;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
         try {
             for(File file : data) {
@@ -238,7 +238,7 @@ public class AdmissionSystem {
                     Integer.parseInt(fin.readLine()),
                     fin.readLine(),
                     fin.readLine(),
-                    LocalDate.parse(fin.readLine(), formatter)
+                    LocalDate.parse(fin.readLine())
                 );
 
                 addCoursesAndExtracirriculars(groupB, fin);
@@ -279,14 +279,13 @@ public class AdmissionSystem {
                     student.addCourse(course);
                 } else if(Character.isDigit(line.charAt(0))) {
                     Extracurricular ec = null;
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
                     switch(items.length) {
                         case 2:
-                            ec = new Extracurricular(items[0], LocalDate.parse(items[1], formatter), Extracurricular.NULL_DATE);
+                            ec = new Extracurricular(items[0], LocalDate.parse(items[1]), Extracurricular.NULL_DATE);
                             break;
                         case 3:
-                            ec = new Extracurricular(items[0], LocalDate.parse(items[1], formatter), LocalDate.parse(items[2], formatter));
+                            ec = new Extracurricular(items[0], LocalDate.parse(items[1]), LocalDate.parse(items[2]));
                             break;
                         default:
                             System.err.println("addCoursesAndExtracirriculars: invalid string items on line");
@@ -324,5 +323,54 @@ public class AdmissionSystem {
         }
 
         this.applications = applications;
+    }
+
+    private void saveStudentData() {
+        BufferedWriter fout;
+
+        try {
+            for(Student student : students) {
+                if(student instanceof GroupA groupA) {
+                    fout = new BufferedWriter(new FileWriter("data/students/groupA/" + student.getId()));
+                    fout.write(groupA.toString());
+                } else if(student instanceof GroupB groupB) {
+                    fout = new BufferedWriter(new FileWriter("data/students/groupB/" + student.getId()));
+                    fout.write(groupB.toString());
+                }
+            }    
+        } catch (IOException iox) {
+            System.err.println("saveStudentData: IOException: " + iox);
+        }
+    }
+
+    private void saveInstitutionData() {
+        BufferedWriter fout;
+
+        try {
+            for(PostSecondary institution : postSecondarys) {
+                if(institution instanceof University university) {
+                    fout = new BufferedWriter(new FileWriter("data/postSecondarys/universities/" + university.getId()));
+                    fout.write(university.toString());
+                } else if(institution instanceof College college) {
+                    fout = new BufferedWriter(new FileWriter("data/postSecondarys/colleges/" + college.getId()));
+                    fout.write(college.toString());
+                }
+            }    
+        } catch (IOException iox) {
+            System.err.println("saveInstitutionData: IOException: " + iox);
+        }
+    }
+
+    private void saveApplicationData() {
+        BufferedWriter fout;
+
+        try {
+            for(Application application : applications) {
+                fout = new BufferedWriter(new FileWriter("data/applications/" + application.getId()));
+                fout.write(application.toString());
+            }
+        } catch (IOException iox) {
+            System.err.println("saveApplicationData: IOException: " + iox);
+        }
     }
 }
