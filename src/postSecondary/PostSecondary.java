@@ -21,6 +21,10 @@ public abstract class PostSecondary {
         return sb.toString();
     }
 
+    public ArrayList<Program> getPrograms() {
+        return programs;
+    }
+
     public int getId() {
         return id;
     }

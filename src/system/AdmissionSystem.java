@@ -331,10 +331,10 @@ public class AdmissionSystem {
         try {
             for(Student student : students) {
                 if(student instanceof GroupA groupA) {
-                    fout = new BufferedWriter(new FileWriter("data/students/groupA/" + student.getId()));
+                    fout = new BufferedWriter(new FileWriter("data/students/groupA/" + student.getId() + ".txt"));
                     fout.write(groupA.toString());
                 } else if(student instanceof GroupB groupB) {
-                    fout = new BufferedWriter(new FileWriter("data/students/groupB/" + student.getId()));
+                    fout = new BufferedWriter(new FileWriter("data/students/groupB/" + student.getId() + ".txt"));
                     fout.write(groupB.toString());
                 }
             }    
@@ -349,11 +349,21 @@ public class AdmissionSystem {
         try {
             for(PostSecondary institution : postSecondarys) {
                 if(institution instanceof University university) {
-                    fout = new BufferedWriter(new FileWriter("data/postSecondarys/universities/" + university.getId()));
+                    fout = new BufferedWriter(new FileWriter("data/postSecondarys/universities/" + university.getId() + "/university.txt"));
                     fout.write(university.toString());
+
+                    for(Program program : university.getPrograms()) {
+                        fout = new BufferedWriter(new FileWriter("data/postSecondarys/universities/" + university.getId() + '/' + program.getId() + ".txt"));
+                        fout.write(program.toString());
+                    }
                 } else if(institution instanceof College college) {
-                    fout = new BufferedWriter(new FileWriter("data/postSecondarys/colleges/" + college.getId()));
+                    fout = new BufferedWriter(new FileWriter("data/postSecondarys/colleges/" + college.getId() + "/college.txt"));
                     fout.write(college.toString());
+
+                    for(Program program : college.getPrograms()) {
+                        fout = new BufferedWriter(new FileWriter("data/postSecondarys/colleges/" + college.getId() + '/' + program.getId() + ".txt"));
+                        fout.write(program.toString());
+                    }
                 }
             }    
         } catch (IOException iox) {
@@ -366,7 +376,7 @@ public class AdmissionSystem {
 
         try {
             for(Application application : applications) {
-                fout = new BufferedWriter(new FileWriter("data/applications/" + application.getId()));
+                fout = new BufferedWriter(new FileWriter("data/applications/" + application.getId() + ".txt"));
                 fout.write(application.toString());
             }
         } catch (IOException iox) {

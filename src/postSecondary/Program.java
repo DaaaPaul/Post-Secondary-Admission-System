@@ -70,17 +70,16 @@ public class Program {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Program ID: "); sb.append(id); sb.append("\n");
-        sb.append("Institution ID: "); sb.append(institutionId); sb.append("\n");
-        sb.append("Program Name: "); sb.append(name); sb.append("\n");
+        sb.append(id); sb.append('\n');
+        sb.append(name); sb.append('\n');
+        sb.append(requiredAverage); sb.append('\n');
+        if(requiredPoints != NULL_REQUIRED_POINTS) {
+            sb.append(requiredPoints); sb.append('\n');
+        }
 
-        sb.append("Required Courses: ");
-        for (String courseCode : requiredCourses) {
-            sb.append(courseCode); sb.append(", ");
-        } sb.append("\n");
-
-        sb.append("Required Average: "); sb.append(requiredAverage); sb.append("\n");
-        sb.append("Required Points: "); sb.append(requiredPoints); sb.append("\n");
+        for(String courseCode : requiredCourses) {
+            sb.append(courseCode); sb.append('\n');
+        }
 
         return sb.toString();
     }
