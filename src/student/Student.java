@@ -6,6 +6,7 @@ import src.utility.Extracurricular;
 import src.application.Application;
 
 public abstract class Student {
+
     private int id;
     private String name;
     private ArrayList<Course> courses;

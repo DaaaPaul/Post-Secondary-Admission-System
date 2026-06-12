@@ -1,15 +1,17 @@
 package src.system;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.*;
 import java.io.*;
-import src.student.Student;
+
+import src.student.*;
 import src.postSecondary.PostSecondary;
 import src.application.Application;
 import src.postSecondary.University;
 
 public class AdmissionSystem {
     private ArrayList<Student> students;
-    private ArrayList<PostSecondary> postSecondarys;
+    private ArrayList<PostSecondary> institutions;
     private ArrayList<Application> applications;
 
     public AdmissionSystem() {
@@ -17,10 +19,10 @@ public class AdmissionSystem {
     }
 
     public void loadData() {
-        applications = getApplications(txtFilesUnder(new File("data/applications")).getFirst());
+        applications = getApplications(txtFilesUnder(new File("data/applications")).get(0));
         
-        ArrayList<File> universityData = txtFilesUnder(new File("data/postSecondarys/universities"));
-        ArrayList<File> collegeData = txtFilesUnder(new File("data/postSecondarys/colleges"));
+        ArrayList<File> universityData = txtFilesUnder(new File("data/institution/universities"));
+        ArrayList<File> collegeData = txtFilesUnder(new File("data/institution/colleges"));
 
         ArrayList<File> groupAData = txtFilesUnder(new File("data/students/groupA"));
         ArrayList<File> groupBData = txtFilesUnder(new File("data/students/groupB"));
@@ -79,8 +81,44 @@ public class AdmissionSystem {
 
     }
 
-    void addStudent(Student student) {
+    public void addStudent() {
+        Scanner in = new Scanner(System.in);
 
+        Student student;
+        boolean finished = false;
+
+        System.out.print("Enter Student ID: "); int id = in.nextInt();
+        System.out.print("Enter Student Name: "); String name = in.nextLine();
+
+        while (!finished) {
+            System.out.print("Enter Student Type: ");
+            String type = in.nextLine();
+
+            if (type.equals("A")) {
+                System.out.println("Enter Student Education Number: ");
+                int edu = in.nextInt();
+
+                student = new GroupA(id, name, edu);
+                students.add(student);
+                finished = true;
+
+            } else if (type.equals("B")) {
+                System.out.println("Enter High School Name: ");
+                String hs = in.nextLine();
+
+                System.out.println("Enter birth year: "); int year = in.nextInt();
+                System.out.println("Enter birth month: "); int month = in.nextInt();
+                System.out.println("Enter birth day: "); int day = in.nextInt();
+                LocalDate date = LocalDate.of(year, month, day);
+
+                student = new GroupB(id, name, hs, date);
+                students.add(student);
+                finished = true;
+
+            } else {
+                System.out.println("Invalid input. Please retry.");
+            }
+        }
     }
 
     boolean removeStudent(int id) {
