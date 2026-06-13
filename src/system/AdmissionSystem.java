@@ -1,26 +1,25 @@
 package src.system;
 
-import java.util.ArrayList;
-import java.io.*;
+import java.time.LocalDate;
 import java.util.*;
-import java.time.*;
+import java.io.*;
 
-import src.student.*;
-import src.postSecondary.*;
+
 import src.application.*;
+import src.postSecondary.*;
+import src.student.*;
 import src.utility.*;
-import java.util.ArrayList;
 
 public class AdmissionSystem {
     private ArrayList<Student> students;
-    private ArrayList<PostSecondary> postSecondarys;
+    private ArrayList<PostSecondary> institutions;
     private ArrayList<Application> applications;
 
     public AdmissionSystem() {
-        ArrayList<File> universityData = txtFilesUnder(new File("data/postSecondarys/universities"));
-        ArrayList<File> collegeData = txtFilesUnder(new File("data/postSecondarys/colleges"));
-        postSecondarys.addAll(getUniversitys(universityData));
-        postSecondarys.addAll(getColleges(collegeData));
+        ArrayList<File> universityData = txtFilesUnder(new File("data/postSecondary/universities"));
+        ArrayList<File> collegeData = txtFilesUnder(new File("data/postSecondary/colleges"));
+        institutions.addAll(getUniversities(universityData));
+        institutions.addAll(getColleges(collegeData));
 
         ArrayList<File> groupAData = txtFilesUnder(new File("data/students/groupA"));
         ArrayList<File> groupBData = txtFilesUnder(new File("data/students/groupB"));
@@ -36,6 +35,10 @@ public class AdmissionSystem {
         saveInstitutionData();
         saveApplicationData();
     }
+
+
+
+
 
     public void addStudent() {
         Scanner in = new Scanner(System.in);
@@ -77,9 +80,50 @@ public class AdmissionSystem {
         }
     }
 
-    boolean removeStudent(int id) {
+    boolean removeStudent() {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Enter Student ID: ");
+        Student student = searchStudentById(in.nextInt());
+
+        boolean success = students.remove(student);
+        if (success) {
+            System.out.println("Student successfully removed.");
+        } else {
+            System.out.println("Student not found in system.");
+        }
+    }
+
+    public void addCourseToStudent() {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Enter Student ID: ");
+        Student student = searchStudentById(in.nextInt());
+
+        if (student == null) {
+            System.out.println("Student not found in system.");
+
+        } else {
+            String input;
+
+            System.out.println("Enter course code."); input = in.nextLine();
+            String course = input;
+
+            System.out.println("Enter midterm grade. Enter 'x' if non-applicable."); input = in.nextLine();
+            int midtermGrade = !input.equals("x") ? Integer.parseInt(input) : -1;
+
+            System.out.println("Enter final grade. Enter 'x' if non-applicable."); input = in.nextLine();
+            int finalGrade = !input.equals("x") ? Integer.parseInt(input) : -1;
+
+            student.addCourse(new Course(course, midtermGrade, finalGrade));
+            System.out.println("Course added successfully.");
+        }
+    }
+
+    public void removeCourseFromStudent() {
 
     }
+
 
     void addPostSecondary(PostSecondary postSecondary) {
 
@@ -93,8 +137,13 @@ public class AdmissionSystem {
 
     }
 
-    Student searchStudentById(int id) {
-
+    public Student searchStudentById(int id) {
+        for (Student student : students) {
+            if (student.getId() == id) {
+                return student;
+            }
+        }
+        return null;
     }
 
     Student searchStudentByName(String name) {
@@ -150,8 +199,8 @@ public class AdmissionSystem {
         return collected;
     }
 
-    private static ArrayList<University> getUniversitys(ArrayList<File> data) {
-        ArrayList<University> universities = new ArrayList();
+    private static ArrayList<University> getUniversities(ArrayList<File> data) {
+        ArrayList<University> universities = new ArrayList<>();
         BufferedReader fin;
 
         try {
@@ -189,14 +238,14 @@ public class AdmissionSystem {
                 universities.add(university);
             }
         } catch (IOException iox) {
-            System.err.println("getUniversitys: IOException: " + iox);
+            System.err.println("getUniversities: IOException: " + iox);
         }
 
         return universities;
     }
 
     private static ArrayList<College> getColleges(ArrayList<File> data) {
-        ArrayList<College> colleges = new ArrayList();
+        ArrayList<College> colleges = new ArrayList<>();
         BufferedReader fin;
 
         try {
@@ -241,7 +290,7 @@ public class AdmissionSystem {
     }
 
     private static ArrayList<GroupA> getGroupAs(ArrayList<File> data) {
-        ArrayList<GroupA> groupAs = new ArrayList();
+        ArrayList<GroupA> groupAs = new ArrayList<>();
         BufferedReader fin;
 
         try {
@@ -254,7 +303,7 @@ public class AdmissionSystem {
                     Integer.parseInt(fin.readLine())
                 );
 
-                addCoursesAndExtracirriculars(groupA, fin);
+                addCoursesAndExtracurriculars(groupA, fin);
 
                 groupAs.add(groupA);
             }
@@ -266,7 +315,7 @@ public class AdmissionSystem {
     }
 
     private static ArrayList<GroupB> getGroupBs(ArrayList<File> data) {
-        ArrayList<GroupB> groupBs = new ArrayList();
+        ArrayList<GroupB> groupBs = new ArrayList<>();
         BufferedReader fin;
 
         try {
@@ -280,7 +329,7 @@ public class AdmissionSystem {
                     LocalDate.parse(fin.readLine())
                 );
 
-                addCoursesAndExtracirriculars(groupB, fin);
+                addCoursesAndExtracurriculars(groupB, fin);
 
                 groupBs.add(groupB);
             }
@@ -291,7 +340,7 @@ public class AdmissionSystem {
         return groupBs;
     }
 
-    private static void addCoursesAndExtracirriculars(Student student, BufferedReader fin) {
+    private static void addCoursesAndExtracurriculars(Student student, BufferedReader fin) {
         try {
             String line;
             while((line = fin.readLine()) != null) {
@@ -311,7 +360,7 @@ public class AdmissionSystem {
                             course = new Course(items[0], Integer.parseInt(items[1]), Integer.parseInt(items[2]));
                             break;
                         default:
-                            System.err.println("addCoursesAndExtracirriculars: invalid string items on line");
+                            System.err.println("addCoursesAndExtracurriculars: invalid string items on line");
                             break;
                     }
 
@@ -327,22 +376,22 @@ public class AdmissionSystem {
                             ec = new Extracurricular(items[0], LocalDate.parse(items[1]), LocalDate.parse(items[2]));
                             break;
                         default:
-                            System.err.println("addCoursesAndExtracirriculars: invalid string items on line");
+                            System.err.println("addCoursesAndExtracurriculars: invalid string items on line");
                             break;
                     }
 
                     student.addExtracurricular(ec);
                 } else {
-                    System.err.println("addCoursesAndExtracirriculars: character is not letter nor digit");
+                    System.err.println("addCoursesAndExtracurriculars: character is not letter nor digit");
                 }
             }
         } catch (IOException iox) {
-            System.err.println("addCoursesAndExtracirriculars: IOException: " + iox);
+            System.err.println("addCoursesAndExtracurriculars: IOException: " + iox);
         }
     }
 
     private void storeApplications(ArrayList<File> applicationData) {
-        ArrayList<Application> applications = new ArrayList();
+        ArrayList<Application> applications = new ArrayList<>();
         BufferedReader fin;
 
         try {
@@ -386,7 +435,7 @@ public class AdmissionSystem {
         BufferedWriter fout;
 
         try {
-            for(PostSecondary institution : postSecondarys) {
+            for(PostSecondary institution : institutions) {
                 if(institution instanceof University university) {
                     fout = new BufferedWriter(new FileWriter("data/postSecondarys/universities/" + university.getId() + "/university.txt"));
                     fout.write(university.toString());

@@ -13,13 +13,11 @@ public abstract class Student {
     private ArrayList<Extracurricular> extracurriculars;
     private ArrayList<Application> applications;
 
+    public int getId() { return id; }
+
     public Student(int id, String name) {
         this.id = id;
         this.name = name;
-    }
-
-    public int getId() {
-        return id;
     }
 
     @Override
