@@ -16,6 +16,10 @@ public class AdmissionSystem {
     private ArrayList<Application> applications;
 
     public AdmissionSystem() {
+        institutions = new ArrayList<>();
+        students = new ArrayList<>();
+        applications = new ArrayList<>();
+
         ArrayList<File> universityData = txtFilesUnder(new File("data/postSecondary/universities"));
         ArrayList<File> collegeData = txtFilesUnder(new File("data/postSecondary/colleges"));
         institutions.addAll(getUniversities(universityData));
@@ -39,39 +43,42 @@ public class AdmissionSystem {
 
 
 
-
     public void addStudent() {
         Scanner in = new Scanner(System.in);
 
         Student student;
         boolean finished = false;
 
-        System.out.print("Enter Student ID: "); int id = in.nextInt();
-        System.out.print("Enter Student Name: "); String name = in.nextLine();
-
         while (!finished) {
+            System.out.print("Enter Student ID: "); int id = Integer.parseInt(in.nextLine());
+            System.out.print("Enter Student Name: "); String name = in.nextLine();
+
             System.out.print("Enter Student Type: ");
             String type = in.nextLine();
 
             if (type.equals("A")) {
                 System.out.println("Enter Student Education Number: ");
-                int edu = in.nextInt();
+                int edu = Integer.parseInt(in.nextLine());
 
                 student = new GroupA(id, name, edu);
                 students.add(student);
+
+                System.out.println("Student added successfully.");
                 finished = true;
 
             } else if (type.equals("B")) {
                 System.out.println("Enter High School Name: ");
                 String hs = in.nextLine();
 
-                System.out.println("Enter birth year: "); int year = in.nextInt();
-                System.out.println("Enter birth month: "); int month = in.nextInt();
-                System.out.println("Enter birth day: "); int day = in.nextInt();
+                System.out.println("Enter birth year: "); int year = Integer.parseInt(in.nextLine());;
+                System.out.println("Enter birth month: "); int month = Integer.parseInt(in.nextLine());;
+                System.out.println("Enter birth day: "); int day = Integer.parseInt(in.nextLine());;
                 LocalDate date = LocalDate.of(year, month, day);
 
                 student = new GroupB(id, name, hs, date);
                 students.add(student);
+
+                System.out.println("Student added successfully.");
                 finished = true;
 
             } else {
@@ -80,14 +87,13 @@ public class AdmissionSystem {
         }
     }
 
-    boolean removeStudent() {
+    public void removeStudent() {
         Scanner in = new Scanner(System.in);
 
         System.out.print("Enter Student ID: ");
-        Student student = searchStudentById(in.nextInt());
+        Student student = searchStudentById(Integer.parseInt(in.nextLine()));
 
-        boolean success = students.remove(student);
-        if (success) {
+        if (students.remove(student)) {
             System.out.println("Student successfully removed.");
         } else {
             System.out.println("Student not found in system.");
@@ -98,7 +104,7 @@ public class AdmissionSystem {
         Scanner in = new Scanner(System.in);
 
         System.out.print("Enter Student ID: ");
-        Student student = searchStudentById(in.nextInt());
+        Student student = searchStudentById(Integer.parseInt(in.nextLine()));
 
         if (student == null) {
             System.out.println("Student not found in system.");
@@ -121,20 +127,261 @@ public class AdmissionSystem {
     }
 
     public void removeCourseFromStudent() {
+        Scanner in = new Scanner(System.in);
 
+        System.out.print("Enter Student ID: ");
+        Student student = searchStudentById(Integer.parseInt(in.nextLine()));
+
+        if (student == null) {
+            System.out.println("Student not found in system.");
+
+        } else {
+            System.out.println("Enter course code.");
+            String course = in.nextLine();
+
+            if (student.searchCourseByCourseCode(course) == null) {
+                System.out.println("Course not found in student record.");
+
+            } else {
+                student.removeCourses(course);
+                System.out.println("Course successfully removed from student record.");
+            }
+        }
+    }
+
+    public void addExtracurricularToStudent() {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Enter Student ID: ");
+        Student student = searchStudentById(Integer.parseInt(in.nextLine()));
+
+        if(student == null) {
+            System.out.println("Student not found in system.");
+
+        } else {
+            System.out.print("Enter extracurricular name: ");
+            String name = in.nextLine();
+
+            System.out.print("Enter begin year: "); int year = Integer.parseInt(in.nextLine());
+            System.out.print("Enter begin month: "); int month = Integer.parseInt(in.nextLine());
+            System.out.print("Enter begin day: "); int day = Integer.parseInt(in.nextLine());
+
+            LocalDate begin = LocalDate.of(year, month, day);
+
+            System.out.print("Has the activity ended? (Y/N): ");
+            char ended = Character.toUpperCase(in.next().charAt(0));
+
+            LocalDate end = Extracurricular.NULL_DATE;
+            if (ended == 'Y') {
+                System.out.print("Enter end year: "); year = Integer.parseInt(in.nextLine());
+                System.out.print("Enter end month: "); month = Integer.parseInt(in.nextLine());
+                System.out.print("Enter end day: "); day = Integer.parseInt(in.nextLine());
+                end = LocalDate.of(year, month, day);
+            }
+
+            student.addExtracurricular(new Extracurricular(name, begin, end));
+            System.out.println("Extracurricular added successfully.");
+        }
+    }
+
+    public void removeExtracurricularFromStudent() {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Enter Student ID: ");
+        Student student = searchStudentById(Integer.parseInt(in.nextLine()));
+
+        if(student == null) {
+            System.out.println("Student not found in system.");
+
+        } else {
+            System.out.print("Enter extracurricular name: ");
+            String name = in.nextLine();
+
+            if (student.removeExtracurriculars(name)) {
+                System.out.println("Extracurricular successfully removed.");
+            } else {
+                System.out.println("Extracurricular not found.");
+            }
+        }
+    }
+
+    // I used return here because there will be way too many nested if-else otherwise.
+    public void addApplicationToStudentAndInstitution() {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Enter Application ID: ");
+        int applicationId = Integer.parseInt(in.nextLine());
+
+        System.out.print("Enter Student ID: ");
+        Student student = searchStudentById(Integer.parseInt(in.nextLine()));
+        if(student == null) {
+            System.out.println("Student not found in system.");
+            return;
+        }
+
+        System.out.print("Enter Institution ID: ");
+        PostSecondary institution = searchInstitutionById(Integer.parseInt(in.nextLine()));
+        if(institution == null) {
+            System.out.println("Institution not found in system.");
+            return;
+        }
+
+        System.out.print("Enter Program ID: ");
+        Program program = institution.searchProgramById(Integer.parseInt(in.nextLine()));
+        if(program == null) {
+            System.out.println("Program not found.");
+            return;
+        }
+
+        System.out.print("Enter Application Status: ");
+        String status = in.nextLine();
+
+        Application application = new Application(applicationId, student, institution, program, status);
+        student.addApplication(application);
+        institution.addApplication(application);
+
+        System.out.println("Application added successfully.");
+    }
+
+    public void removeApplicationFromStudentAndInstitution() {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Enter Student ID: ");
+        Student student = searchStudentById(Integer.parseInt(in.nextLine()));
+        if(student == null) {
+            System.out.println("Student not found in system.");
+            return;
+        }
+
+        System.out.print("Enter Application ID: ");
+        int id = Integer.parseInt(in.nextLine());
+        Application application = student.searchApplicationById(id);
+        if(application == null) {
+            System.out.println("Application not found.");
+            return;
+        }
+
+        student.removeApplication(id);
+        application.getInstitution().removeApplication(id);
+        System.out.println("Application successfully removed.");
     }
 
 
-    void addPostSecondary(PostSecondary postSecondary) {
 
+    public void addPostSecondary(PostSecondary postSecondary) {
+        Scanner in = new Scanner(System.in);
+        boolean finished = false;
+
+        while (!finished) {
+            System.out.print("Enter Institution ID: "); int id = Integer.parseInt(in.nextLine());
+            System.out.print("Enter Institution Name: "); String name = in.nextLine();
+
+            System.out.print("Enter institution type ('C' for college, 'U' for university): ");
+            char type = Character.toUpperCase(in.nextLine().charAt(0));
+
+            if (type == 'C') { // college
+                char offers;
+                boolean offersApprenticeship = true;
+
+                do {
+                    System.out.print("Does the college offer apprenticeship program(s)? Enter 'Y' for yes, 'N' for no: ");
+                    offers = Character.toUpperCase(in.nextLine().charAt(0));
+
+                    if (offers == 'N') {
+                        offersApprenticeship = false;
+                    } else if (offers != 'Y') {
+                        System.out.println("Invalid input.");
+                    }
+
+                } while (offers != 'Y' && offers != 'N');
+
+                System.out.print("Enter the graduate employment rate: ");
+                double employmentRate = Double.parseDouble(in.nextLine());
+
+                College college = new College(id, name, offersApprenticeship, employmentRate);
+                institutions.add(college);
+
+                System.out.println("College successfully added.");
+                finished = true;
+
+            } else if (type == 'U') { // university
+                System.out.print("Enter annual research funding: "); int arf = Integer.parseInt(in.nextLine());
+                System.out.print("Enter World QS Ranking: "); int qs = Integer.parseInt(in.nextLine());
+
+                University university = new University(id, name, arf, qs);
+                institutions.add(university);
+
+                System.out.println("University successfully added.");
+                finished = true;
+
+            } else {
+                System.out.println("Invalid input.");
+            }
+        }
     }
 
-    boolean removePostSecondary(int id) {
+    public void removePostSecondary() {
+        Scanner in = new Scanner(System.in);
 
+        System.out.print("Enter Institution ID: ");
+        PostSecondary institution = searchInstitutionById(Integer.parseInt(in.nextLine()));
+
+        if (institutions.remove(institution)) {
+            System.out.println("Institution successfully removed.");
+        } else {
+            System.out.println("Institution not found in system.");
+        }
     }
 
-    void createApplication() {
+    public void addProgramToInstitution() {
+        Scanner in = new Scanner(System.in);
 
+        System.out.print("Enter Institution ID: ");
+        PostSecondary institution = searchInstitutionById(Integer.parseInt(in.nextLine()));
+
+        if (institution == null) {
+            System.out.println("Institution not found in system.");
+
+        } else {
+            System.out.print("Enter Program ID: "); int id = Integer.parseInt(in.nextLine());
+            System.out.print("Enter Program Name: "); String name = in.nextLine();
+            System.out.print("Enter Required Average: "); double avg = Double.parseDouble(in.nextLine());
+            System.out.print("Enter Required Points (-1 if none): "); int points = Integer.parseInt(in.nextLine());
+
+            Program program = new Program(id, institution.getId(), name, avg, points);
+
+            System.out.println("Enter required courses (type 'done' to finish):");
+
+            String course = in.nextLine();
+            while (!course.equalsIgnoreCase("done")) {
+                program.addRequiredCourse(course);
+                course = in.nextLine();
+            }
+
+            institution.addProgram(program);
+            System.out.println("Program successfully added.");
+        }
+    }
+
+    public void removeProgramFromInstitution() {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Enter Institution ID: ");
+        PostSecondary institution = searchInstitutionById(Integer.parseInt(in.nextLine()));
+
+        if (institution == null) {
+            System.out.println("Institution not found in system.");
+
+        } else {
+            System.out.print("Enter Program ID: ");
+            Program program = institution.searchProgramById(Integer.parseInt(in.nextLine()));
+
+            if (institution.getPrograms().remove(program)) {
+                System.out.println("Program successfully removed.");
+            } else {
+                System.out.println("Program not found in system.");
+            }
+        }
     }
 
     public Student searchStudentById(int id) {
@@ -146,32 +393,73 @@ public class AdmissionSystem {
         return null;
     }
 
-    Student searchStudentByName(String name) {
-
+    public ArrayList<Student> searchStudentByName(String name) {
+        ArrayList<Student> ret = new ArrayList<>();
+        for (Student stu : students) {
+            if (stu.getName().equals(name)) {
+                ret.add(stu);
+            }
+        }
+        return ret;
     }
 
-    PostSecondary searchPostSecondaryById(int id) {
-
+    public PostSecondary searchInstitutionById(int id) {
+        for (PostSecondary institution : institutions) {
+            if (institution.getId() == id) {
+                return institution;
+            }
+        }
+        return null;
     }
 
-    PostSecondary searchPostSecondaryByName(String name) {
-
+    public PostSecondary searchPostSecondaryByName(String name) {
+        for (PostSecondary institution : institutions) {
+            if (institution.getName().equals(name)) {
+                return institution;
+            }
+        }
+        return null;
     }
 
-    Application searchApplicationById(int id) {
-
+    public Application searchApplicationById(int id) {
+        for (Application app : applications) {
+            if (app.getId() == id) {
+                return app;
+            }
+        }
+        return null;
     }
 
-    Application searchApplicationByStudent(int studentId) {
-
+    public ArrayList<Application> searchApplicationByStudent(int id) {
+        ArrayList<Application> ret = new ArrayList<>();
+        for (Application app : applications) {
+            if (app.getStudent().getId() == id) {
+                ret.add(app);
+            }
+        }
+        return ret;
     }
 
-    Application searchApplicationByProgram(int programId) {
-
+    public ArrayList<Application> searchApplicationsByProgram(int id) {
+        ArrayList<Application> ret = new ArrayList<>();
+        for (Application app : applications) {
+            if (app.getProgram().getId() == id) {
+                ret.add(app);
+            }
+        }
+        return ret;
     }
 
-    void sortStudentsByMerit() {
-
+    public void sortStudentsByMerit() {
+        for (int i = 1; i < students.size(); i++) {
+            Student cur = students.get(i);
+            int j = i - 1;
+            while (j >= 0 && students.get(j).getAverage() < cur.getAverage()) {
+                students.set(j + 1, students.get(j));
+                j--;
+            }
+            students.set(j + 1, cur);
+        }
     }
 
     private static ArrayList<File> txtFilesUnder(File folder) {
@@ -400,7 +688,7 @@ public class AdmissionSystem {
 
                 int id = Integer.parseInt(fin.readLine());
                 Student student = searchStudentById(Integer.parseInt(fin.readLine()));
-                PostSecondary institution = searchPostSecondaryById(Integer.parseInt(fin.readLine()));
+                PostSecondary institution = searchInstitutionById(Integer.parseInt(fin.readLine()));
                 Program program = institution.searchProgramById(Integer.parseInt(fin.readLine()));
                 String status = fin.readLine();
 
@@ -437,19 +725,19 @@ public class AdmissionSystem {
         try {
             for(PostSecondary institution : institutions) {
                 if(institution instanceof University university) {
-                    fout = new BufferedWriter(new FileWriter("data/postSecondarys/universities/" + university.getId() + "/university.txt"));
+                    fout = new BufferedWriter(new FileWriter("data/postSecondary/universities/" + university.getId() + "/university.txt"));
                     fout.write(university.toString());
 
                     for(Program program : university.getPrograms()) {
-                        fout = new BufferedWriter(new FileWriter("data/postSecondarys/universities/" + university.getId() + '/' + program.getId() + ".txt"));
+                        fout = new BufferedWriter(new FileWriter("data/postSecondary/universities/" + university.getId() + '/' + program.getId() + ".txt"));
                         fout.write(program.toString());
                     }
                 } else if(institution instanceof College college) {
-                    fout = new BufferedWriter(new FileWriter("data/postSecondarys/colleges/" + college.getId() + "/college.txt"));
+                    fout = new BufferedWriter(new FileWriter("data/postSecondary/colleges/" + college.getId() + "/college.txt"));
                     fout.write(college.toString());
 
                     for(Program program : college.getPrograms()) {
-                        fout = new BufferedWriter(new FileWriter("data/postSecondarys/colleges/" + college.getId() + '/' + program.getId() + ".txt"));
+                        fout = new BufferedWriter(new FileWriter("data/postSecondary/colleges/" + college.getId() + '/' + program.getId() + ".txt"));
                         fout.write(program.toString());
                     }
                 }

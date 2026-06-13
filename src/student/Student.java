@@ -14,10 +14,15 @@ public abstract class Student {
     private ArrayList<Application> applications;
 
     public int getId() { return id; }
+    public String getName() { return name; }
 
     public Student(int id, String name) {
         this.id = id;
         this.name = name;
+
+        this.courses = new ArrayList<>();
+        this.extracurriculars = new ArrayList<>();
+        this.applications = new ArrayList<>();
     }
 
     @Override
@@ -105,6 +110,19 @@ public abstract class Student {
 
     public void addApplication(Application application) {
         applications.add(application);
+    }
+
+    public boolean removeApplication(int id) {
+        return applications.removeIf(a -> a.compareId(id) == 0);
+    }
+
+    public Application searchApplicationById(int id) {
+        for(Application a : applications) {
+            if(a.compareId(id) == 0) {
+                return a;
+            }
+        }
+        return null;
     }
 
     public double getAverage() {

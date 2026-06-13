@@ -18,7 +18,7 @@ public class Program {
         this.institutionId = institutionId;
         this.name = name;
 
-        this.requiredCourses = new ArrayList();
+        this.requiredCourses = new ArrayList<>();
         this.requiredAverage = requiredAverage;
         this.requiredPoints = requiredPoints;
     }
