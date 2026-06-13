@@ -4,21 +4,31 @@ import java.time.LocalDate;
 import java.util.*;
 import java.io.*;
 
-
 import src.application.*;
 import src.postSecondary.*;
 import src.student.*;
 import src.utility.*;
 
+/**
+ * AdmissionSystem
+ * The main manager class for the post-secondary admission framework. Handles files, students, and institutions.
+ * Paul Peng and Rex Lin
+ * Last modified 2026-06-13
+ */
 public class AdmissionSystem {
     private ArrayList<Student> students;
     private ArrayList<PostSecondary> institutions;
     private ArrayList<Application> applications;
+    private Scanner in;
 
+    /**
+     * Initializes the AdmissionSystem, loading initial data from the file system.
+     */
     public AdmissionSystem() {
         institutions = new ArrayList<>();
         students = new ArrayList<>();
         applications = new ArrayList<>();
+        in = new Scanner(System.in);
 
         ArrayList<File> universityData = txtFilesUnder(new File("data/postSecondary/universities"));
         ArrayList<File> collegeData = txtFilesUnder(new File("data/postSecondary/colleges"));
@@ -34,18 +44,19 @@ public class AdmissionSystem {
         storeApplications(applicationData);
     }
 
+    /**
+     * Saves all current system data back to the file system.
+     */
     public void saveData() {
         saveStudentData();
         saveInstitutionData();
         saveApplicationData();
     }
 
-
-
-
+    /**
+     * Prompts the user to create and add a new student to the system.
+     */
     public void addStudent() {
-        Scanner in = new Scanner(System.in);
-
         Student student;
         boolean finished = false;
 
@@ -70,9 +81,9 @@ public class AdmissionSystem {
                 System.out.println("Enter High School Name: ");
                 String hs = in.nextLine();
 
-                System.out.println("Enter birth year: "); int year = Integer.parseInt(in.nextLine());;
-                System.out.println("Enter birth month: "); int month = Integer.parseInt(in.nextLine());;
-                System.out.println("Enter birth day: "); int day = Integer.parseInt(in.nextLine());;
+                System.out.println("Enter birth year: "); int year = Integer.parseInt(in.nextLine());
+                System.out.println("Enter birth month: "); int month = Integer.parseInt(in.nextLine());
+                System.out.println("Enter birth day: "); int day = Integer.parseInt(in.nextLine());
                 LocalDate date = LocalDate.of(year, month, day);
 
                 student = new GroupB(id, name, hs, date);
@@ -87,9 +98,10 @@ public class AdmissionSystem {
         }
     }
 
+    /**
+     * Prompts the user to remove a student from the system via ID.
+     */
     public void removeStudent() {
-        Scanner in = new Scanner(System.in);
-
         System.out.print("Enter Student ID: ");
         Student student = searchStudentById(Integer.parseInt(in.nextLine()));
 
@@ -100,9 +112,10 @@ public class AdmissionSystem {
         }
     }
 
+    /**
+     * Prompts the user to add a course record to an existing student.
+     */
     public void addCourseToStudent() {
-        Scanner in = new Scanner(System.in);
-
         System.out.print("Enter Student ID: ");
         Student student = searchStudentById(Integer.parseInt(in.nextLine()));
 
@@ -126,9 +139,10 @@ public class AdmissionSystem {
         }
     }
 
+    /**
+     * Prompts the user to remove a course from a student's profile.
+     */
     public void removeCourseFromStudent() {
-        Scanner in = new Scanner(System.in);
-
         System.out.print("Enter Student ID: ");
         Student student = searchStudentById(Integer.parseInt(in.nextLine()));
 
@@ -149,9 +163,10 @@ public class AdmissionSystem {
         }
     }
 
+    /**
+     * Prompts the user to add an extracurricular activity to a student's profile.
+     */
     public void addExtracurricularToStudent() {
-        Scanner in = new Scanner(System.in);
-
         System.out.print("Enter Student ID: ");
         Student student = searchStudentById(Integer.parseInt(in.nextLine()));
 
@@ -169,7 +184,7 @@ public class AdmissionSystem {
             LocalDate begin = LocalDate.of(year, month, day);
 
             System.out.print("Has the activity ended? (Y/N): ");
-            char ended = Character.toUpperCase(in.next().charAt(0));
+            char ended = Character.toUpperCase(in.nextLine().charAt(0));
 
             LocalDate end = Extracurricular.NULL_DATE;
             if (ended == 'Y') {
@@ -184,9 +199,10 @@ public class AdmissionSystem {
         }
     }
 
+    /**
+     * Prompts the user to remove an extracurricular activity from a student.
+     */
     public void removeExtracurricularFromStudent() {
-        Scanner in = new Scanner(System.in);
-
         System.out.print("Enter Student ID: ");
         Student student = searchStudentById(Integer.parseInt(in.nextLine()));
 
@@ -205,10 +221,10 @@ public class AdmissionSystem {
         }
     }
 
-    // I used return here because there will be way too many nested if-else otherwise.
+    /**
+     * Prompts the user to register an application for a student to a specific institution program.
+     */
     public void addApplicationToStudentAndInstitution() {
-        Scanner in = new Scanner(System.in);
-
         System.out.print("Enter Application ID: ");
         int applicationId = Integer.parseInt(in.nextLine());
 
@@ -243,9 +259,10 @@ public class AdmissionSystem {
         System.out.println("Application added successfully.");
     }
 
+    /**
+     * Prompts the user to remove a specific application.
+     */
     public void removeApplicationFromStudentAndInstitution() {
-        Scanner in = new Scanner(System.in);
-
         System.out.print("Enter Student ID: ");
         Student student = searchStudentById(Integer.parseInt(in.nextLine()));
         if(student == null) {
@@ -266,10 +283,10 @@ public class AdmissionSystem {
         System.out.println("Application successfully removed.");
     }
 
-
-
-    public void addPostSecondary(PostSecondary postSecondary) {
-        Scanner in = new Scanner(System.in);
+    /**
+     * Prompts the user to add a new post-secondary institution.
+     */
+    public void addPostSecondary() {
         boolean finished = false;
 
         while (!finished) {
@@ -320,9 +337,10 @@ public class AdmissionSystem {
         }
     }
 
+    /**
+     * Prompts the user to remove a post-secondary institution from the system.
+     */
     public void removePostSecondary() {
-        Scanner in = new Scanner(System.in);
-
         System.out.print("Enter Institution ID: ");
         PostSecondary institution = searchInstitutionById(Integer.parseInt(in.nextLine()));
 
@@ -333,9 +351,10 @@ public class AdmissionSystem {
         }
     }
 
+    /**
+     * Prompts the user to add an academic program to a specified institution.
+     */
     public void addProgramToInstitution() {
-        Scanner in = new Scanner(System.in);
-
         System.out.print("Enter Institution ID: ");
         PostSecondary institution = searchInstitutionById(Integer.parseInt(in.nextLine()));
 
@@ -363,9 +382,10 @@ public class AdmissionSystem {
         }
     }
 
+    /**
+     * Prompts the user to remove an academic program from a specified institution.
+     */
     public void removeProgramFromInstitution() {
-        Scanner in = new Scanner(System.in);
-
         System.out.print("Enter Institution ID: ");
         PostSecondary institution = searchInstitutionById(Integer.parseInt(in.nextLine()));
 
@@ -384,6 +404,11 @@ public class AdmissionSystem {
         }
     }
 
+    /**
+     * Searches for a student by their ID.
+     * @param id the student ID to locate
+     * @return The Student object if found, otherwise null
+     */
     public Student searchStudentById(int id) {
         for (Student student : students) {
             if (student.getId() == id) {
@@ -393,6 +418,11 @@ public class AdmissionSystem {
         return null;
     }
 
+    /**
+     * Searches for students by their full name.
+     * @param name the student name to locate
+     * @return A list of students matching the given name
+     */
     public ArrayList<Student> searchStudentByName(String name) {
         ArrayList<Student> ret = new ArrayList<>();
         for (Student stu : students) {
@@ -403,6 +433,11 @@ public class AdmissionSystem {
         return ret;
     }
 
+    /**
+     * Searches for an institution by its ID.
+     * @param id the institution ID to locate
+     * @return The PostSecondary object if found, otherwise null
+     */
     public PostSecondary searchInstitutionById(int id) {
         for (PostSecondary institution : institutions) {
             if (institution.getId() == id) {
@@ -412,6 +447,11 @@ public class AdmissionSystem {
         return null;
     }
 
+    /**
+     * Searches for an institution by its name.
+     * @param name the institution name to locate
+     * @return The PostSecondary object if found, otherwise null
+     */
     public PostSecondary searchPostSecondaryByName(String name) {
         for (PostSecondary institution : institutions) {
             if (institution.getName().equals(name)) {
@@ -421,6 +461,11 @@ public class AdmissionSystem {
         return null;
     }
 
+    /**
+     * Searches for an application by its ID.
+     * @param id the application ID to locate
+     * @return The Application object if found, otherwise null
+     */
     public Application searchApplicationById(int id) {
         for (Application app : applications) {
             if (app.getId() == id) {
@@ -430,6 +475,11 @@ public class AdmissionSystem {
         return null;
     }
 
+    /**
+     * Retrieves all applications associated with a specific student ID.
+     * @param id the student ID
+     * @return A list of the student's applications
+     */
     public ArrayList<Application> searchApplicationByStudent(int id) {
         ArrayList<Application> ret = new ArrayList<>();
         for (Application app : applications) {
@@ -440,6 +490,11 @@ public class AdmissionSystem {
         return ret;
     }
 
+    /**
+     * Retrieves all applications submitted to a specific program ID.
+     * @param id the program ID
+     * @return A list of applications to the given program
+     */
     public ArrayList<Application> searchApplicationsByProgram(int id) {
         ArrayList<Application> ret = new ArrayList<>();
         for (Application app : applications) {
@@ -450,6 +505,9 @@ public class AdmissionSystem {
         return ret;
     }
 
+    /**
+     * Sorts the global list of students by their grade average in descending order.
+     */
     public void sortStudentsByMerit() {
         for (int i = 1; i < students.size(); i++) {
             Student cur = students.get(i);
@@ -462,6 +520,11 @@ public class AdmissionSystem {
         }
     }
 
+    /**
+     * Recursively retrieves all text files under a specified directory.
+     * @param folder the root directory to search
+     * @return An ArrayList containing all found File objects
+     */
     private static ArrayList<File> txtFilesUnder(File folder) {
         ArrayList<File> collected = new ArrayList<File>();
 
@@ -487,6 +550,11 @@ public class AdmissionSystem {
         return collected;
     }
 
+    /**
+     * Parses university data files and returns a list of University objects.
+     * @param data the list of text files to parse
+     * @return A list of compiled universities
+     */
     private static ArrayList<University> getUniversities(ArrayList<File> data) {
         ArrayList<University> universities = new ArrayList<>();
         BufferedReader fin;
@@ -521,9 +589,12 @@ public class AdmissionSystem {
                     }
 
                     university.addProgram(program);
+                    fin.close();
                 }
 
                 universities.add(university);
+
+                fin.close();
             }
         } catch (IOException iox) {
             System.err.println("getUniversities: IOException: " + iox);
@@ -532,6 +603,11 @@ public class AdmissionSystem {
         return universities;
     }
 
+    /**
+     * Parses college data files and returns a list of College objects.
+     * @param data the list of text files to parse
+     * @return A list of compiled colleges
+     */
     private static ArrayList<College> getColleges(ArrayList<File> data) {
         ArrayList<College> colleges = new ArrayList<>();
         BufferedReader fin;
@@ -566,9 +642,12 @@ public class AdmissionSystem {
                     }
 
                     college.addProgram(program);
+
+                    fin.close();
                 }
 
                 colleges.add(college);
+                fin.close();
             }
         } catch (IOException iox) {
             System.err.println("getColleges: IOException: " + iox);
@@ -577,6 +656,11 @@ public class AdmissionSystem {
         return colleges;
     }
 
+    /**
+     * Parses GroupA student data files and returns a list of GroupA objects.
+     * @param data the list of text files to parse
+     * @return A list of compiled GroupA students
+     */
     private static ArrayList<GroupA> getGroupAs(ArrayList<File> data) {
         ArrayList<GroupA> groupAs = new ArrayList<>();
         BufferedReader fin;
@@ -594,6 +678,8 @@ public class AdmissionSystem {
                 addCoursesAndExtracurriculars(groupA, fin);
 
                 groupAs.add(groupA);
+
+                fin.close();
             }
         } catch (IOException iox) {
             System.err.println("getGroupAs: IOException: " + iox);
@@ -602,6 +688,11 @@ public class AdmissionSystem {
         return groupAs;
     }
 
+    /**
+     * Parses GroupB student data files and returns a list of GroupB objects.
+     * @param data the list of text files to parse
+     * @return A list of compiled GroupB students
+     */
     private static ArrayList<GroupB> getGroupBs(ArrayList<File> data) {
         ArrayList<GroupB> groupBs = new ArrayList<>();
         BufferedReader fin;
@@ -620,6 +711,8 @@ public class AdmissionSystem {
                 addCoursesAndExtracurriculars(groupB, fin);
 
                 groupBs.add(groupB);
+
+                fin.close();
             }
         } catch (IOException iox) {
             System.err.println("getGroupBs: IOException: " + iox);
@@ -628,6 +721,11 @@ public class AdmissionSystem {
         return groupBs;
     }
 
+    /**
+     * Helper method to parse and add courses and extracurriculars to a given student.
+     * @param student the student object to mutate
+     * @param fin the BufferedReader reading the student's file
+     */
     private static void addCoursesAndExtracurriculars(Student student, BufferedReader fin) {
         try {
             String line;
@@ -678,6 +776,10 @@ public class AdmissionSystem {
         }
     }
 
+    /**
+     * Parses application data files and stores them globally within the system.
+     * @param applicationData the list of text files containing application info
+     */
     private void storeApplications(ArrayList<File> applicationData) {
         ArrayList<Application> applications = new ArrayList<>();
         BufferedReader fin;
@@ -693,6 +795,8 @@ public class AdmissionSystem {
                 String status = fin.readLine();
 
                 applications.add(new Application(id, student, institution, program, status));
+            
+                fin.close();
             }
         } catch (IOException iox) {
             System.err.println("getApplications: IOException: " + iox);
@@ -701,6 +805,9 @@ public class AdmissionSystem {
         this.applications = applications;
     }
 
+    /**
+     * Saves internal student data back into external text files.
+     */
     private void saveStudentData() {
         BufferedWriter fout;
 
@@ -709,9 +816,11 @@ public class AdmissionSystem {
                 if(student instanceof GroupA groupA) {
                     fout = new BufferedWriter(new FileWriter("data/students/groupA/" + student.getId() + ".txt"));
                     fout.write(groupA.toString());
+                    fout.close();
                 } else if(student instanceof GroupB groupB) {
                     fout = new BufferedWriter(new FileWriter("data/students/groupB/" + student.getId() + ".txt"));
                     fout.write(groupB.toString());
+                    fout.close();
                 }
             }
         } catch (IOException iox) {
@@ -719,6 +828,9 @@ public class AdmissionSystem {
         }
     }
 
+    /**
+     * Saves internal institutional data back into external text files.
+     */
     private void saveInstitutionData() {
         BufferedWriter fout;
 
@@ -727,18 +839,22 @@ public class AdmissionSystem {
                 if(institution instanceof University university) {
                     fout = new BufferedWriter(new FileWriter("data/postSecondary/universities/" + university.getId() + "/university.txt"));
                     fout.write(university.toString());
+                    fout.close();
 
                     for(Program program : university.getPrograms()) {
                         fout = new BufferedWriter(new FileWriter("data/postSecondary/universities/" + university.getId() + '/' + program.getId() + ".txt"));
                         fout.write(program.toString());
+                        fout.close();
                     }
                 } else if(institution instanceof College college) {
                     fout = new BufferedWriter(new FileWriter("data/postSecondary/colleges/" + college.getId() + "/college.txt"));
                     fout.write(college.toString());
+                    fout.close();
 
                     for(Program program : college.getPrograms()) {
                         fout = new BufferedWriter(new FileWriter("data/postSecondary/colleges/" + college.getId() + '/' + program.getId() + ".txt"));
                         fout.write(program.toString());
+                        fout.close();
                     }
                 }
             }
@@ -747,6 +863,9 @@ public class AdmissionSystem {
         }
     }
 
+    /**
+     * Saves internal application data back into external text files.
+     */
     private void saveApplicationData() {
         BufferedWriter fout;
 
@@ -754,6 +873,7 @@ public class AdmissionSystem {
             for(Application application : applications) {
                 fout = new BufferedWriter(new FileWriter("data/applications/" + application.getId() + ".txt"));
                 fout.write(application.toString());
+                fout.close();
             }
         } catch (IOException iox) {
             System.err.println("saveApplicationData: IOException: " + iox);
