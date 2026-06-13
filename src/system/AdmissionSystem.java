@@ -409,7 +409,7 @@ public class AdmissionSystem {
      * @param id the student ID to locate
      * @return The Student object if found, otherwise null
      */
-    public Student searchStudentById(int id) {
+    private Student searchStudentById(int id) {
         for (Student student : students) {
             if (student.getId() == id) {
                 return student;
@@ -419,11 +419,27 @@ public class AdmissionSystem {
     }
 
     /**
+     * Prompts the user for a student ID and displays the matching student.
+     */
+    public void searchStudentByIdUI() {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Enter Student ID: ");
+        Student student = searchStudentById(Integer.parseInt(in.nextLine()));
+
+        if (student == null) {
+            System.out.println("Student not found in system.");
+        } else {
+            System.out.println(student);
+        }
+    }
+
+    /**
      * Searches for students by their full name.
      * @param name the student name to locate
      * @return A list of students matching the given name
      */
-    public ArrayList<Student> searchStudentByName(String name) {
+    private ArrayList<Student> searchStudentsByName(String name) {
         ArrayList<Student> ret = new ArrayList<>();
         for (Student stu : students) {
             if (stu.getName().equals(name)) {
@@ -434,11 +450,29 @@ public class AdmissionSystem {
     }
 
     /**
+     * Prompts the user for a student name and displays all matching students.
+     */
+    public void searchStudentsByNameUI() {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Enter Student Name: ");
+        ArrayList<Student> results = searchStudentsByName(in.nextLine());
+
+        if (results.isEmpty()) {
+            System.out.println("No students found in system.");
+        } else {
+            for (Student student : results) {
+                System.out.println(student);
+            }
+        }
+    }
+
+    /**
      * Searches for an institution by its ID.
      * @param id the institution ID to locate
      * @return The PostSecondary object if found, otherwise null
      */
-    public PostSecondary searchInstitutionById(int id) {
+    private PostSecondary searchInstitutionById(int id) {
         for (PostSecondary institution : institutions) {
             if (institution.getId() == id) {
                 return institution;
@@ -448,11 +482,27 @@ public class AdmissionSystem {
     }
 
     /**
+     * Prompts the user for an institution ID and displays the matching institution.
+     */
+    public void searchInstitutionByIdUI() {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Enter Institution ID: ");
+        PostSecondary institution = searchInstitutionById(Integer.parseInt(in.nextLine()));
+
+        if (institution == null) {
+            System.out.println("Institution not found in system.");
+        } else {
+            System.out.println(institution);
+        }
+    }
+
+    /**
      * Searches for an institution by its name.
      * @param name the institution name to locate
      * @return The PostSecondary object if found, otherwise null
      */
-    public PostSecondary searchPostSecondaryByName(String name) {
+    private PostSecondary searchInstitutionsByName(String name) {
         for (PostSecondary institution : institutions) {
             if (institution.getName().equals(name)) {
                 return institution;
@@ -462,11 +512,27 @@ public class AdmissionSystem {
     }
 
     /**
+     * Prompts the user for an institution name and displays the matching institution.
+     */
+    public void searchInstitutionsByNameUI() {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Enter Institution Name: ");
+        PostSecondary institution = searchInstitutionsByName(in.nextLine());
+
+        if (institution == null) {
+            System.out.println("Institution not found in system.");
+        } else {
+            System.out.println(institution);
+        }
+    }
+
+    /**
      * Searches for an application by its ID.
      * @param id the application ID to locate
      * @return The Application object if found, otherwise null
      */
-    public Application searchApplicationById(int id) {
+    private Application searchApplicationById(int id) {
         for (Application app : applications) {
             if (app.getId() == id) {
                 return app;
@@ -476,11 +542,27 @@ public class AdmissionSystem {
     }
 
     /**
+     * Prompts the user for an application ID and displays the matching application.
+     */
+    public void searchApplicationByIdUI() {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Enter Application ID: ");
+        Application application = searchApplicationById(Integer.parseInt(in.nextLine()));
+
+        if (application == null) {
+            System.out.println("Application not found in system.");
+        } else {
+            System.out.println(application);
+        }
+    }
+
+    /**
      * Retrieves all applications associated with a specific student ID.
      * @param id the student ID
      * @return A list of the student's applications
      */
-    public ArrayList<Application> searchApplicationByStudent(int id) {
+    private ArrayList<Application> searchApplicationByStudent(int id) {
         ArrayList<Application> ret = new ArrayList<>();
         for (Application app : applications) {
             if (app.getStudent().getId() == id) {
@@ -491,11 +573,29 @@ public class AdmissionSystem {
     }
 
     /**
+     * Prompts the user for a student ID and displays all applications associated with that student.
+     */
+    public void searchApplicationsByStudentUI() {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Enter Student ID: ");
+        ArrayList<Application> results = searchApplicationByStudent(Integer.parseInt(in.nextLine()));
+
+        if (results.isEmpty()) {
+            System.out.println("No applications found in system.");
+        } else {
+            for (Application application : results) {
+                System.out.println(application);
+            }
+        }
+    }
+
+    /**
      * Retrieves all applications submitted to a specific program ID.
      * @param id the program ID
      * @return A list of applications to the given program
      */
-    public ArrayList<Application> searchApplicationsByProgram(int id) {
+    private ArrayList<Application> searchApplicationsByProgram(int id) {
         ArrayList<Application> ret = new ArrayList<>();
         for (Application app : applications) {
             if (app.getProgram().getId() == id) {
@@ -506,9 +606,27 @@ public class AdmissionSystem {
     }
 
     /**
+     * Prompts the user for a program ID and displays all applications associated with that program.
+     */
+    public void searchApplicationsByProgramUI() {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Enter Program ID: ");
+        ArrayList<Application> results = searchApplicationsByProgram(Integer.parseInt(in.nextLine()));
+
+        if (results.isEmpty()) {
+            System.out.println("No applications found.");
+        } else {
+            for (Application application : results) {
+                System.out.println(application);
+            }
+        }
+    }
+
+    /**
      * Sorts the global list of students by their grade average in descending order.
      */
-    public void sortStudentsByMerit() {
+    private void sortStudentsByMerit() {
         for (int i = 1; i < students.size(); i++) {
             Student cur = students.get(i);
             int j = i - 1;
@@ -518,6 +636,14 @@ public class AdmissionSystem {
             }
             students.set(j + 1, cur);
         }
+    }
+
+    /**
+     * Wrapper UI for sortStudentsByMerit(); Sorts and displays a confirmation message.
+     */
+    public void sortStudentsByMeritUI() {
+        sortStudentsByMerit();
+        System.out.println("Students successfully sorted by merit.");
     }
 
     /**
