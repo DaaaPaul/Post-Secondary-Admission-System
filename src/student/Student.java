@@ -18,6 +18,10 @@ public abstract class Student {
         this.name = name;
     }
 
+    public int getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -26,15 +30,11 @@ public abstract class Student {
         sb.append(name); sb.append('\n');
 
         for(Course course : courses) {
-            sb.append(course);
+            sb.append(course); sb.append('\n');
         }
 
         for(Extracurricular extracurricular : extracurriculars) {
-            sb.append(extracurricular);
-        }
-
-        for(Application application : applications) {
-            sb.append(application);
+            sb.append(extracurricular); sb.append('\n');
         }
 
         return sb.toString();
@@ -137,5 +137,21 @@ public abstract class Student {
         }
 
         return points;
+    }
+
+    static protected String insertToString(String original, String insert) {
+        int first = original.indexOf('\n');
+        if(first == -1) {
+            return original;
+        }
+
+        int second = original.indexOf('\n', first + 1);
+        if(second == -1) {
+            return original;
+        }
+
+        int insertIndex = second + 1;
+        
+        return original.substring(0, insertIndex) + insert + original.substring(insertIndex);
     }
 }

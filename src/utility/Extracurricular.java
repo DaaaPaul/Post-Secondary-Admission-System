@@ -20,9 +20,11 @@ public class Extracurricular {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(name); sb.append('\n');
-        sb.append(begin); sb.append('\n');
-        sb.append(end); sb.append('\n');
+        sb.append(name); sb.append(' ');
+        sb.append(begin);
+        if(end != NULL_DATE) {
+            sb.append(' '); sb.append(end);
+        }
 
         return sb.toString();
     }

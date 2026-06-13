@@ -4,7 +4,6 @@ import src.application.*;
 import src.student.Student;
 
 public class University extends PostSecondary {
-
     private int annualResearchFunding;
     private int qsRanking;
 
@@ -12,6 +11,11 @@ public class University extends PostSecondary {
         super(id, name);
         this.annualResearchFunding = annualResearchFunding;
         this.qsRanking = qsRanking;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + annualResearchFunding + '\n' + qsRanking;
     }
 
     @Override
@@ -36,10 +40,5 @@ public class University extends PostSecondary {
             return false;
         }
 
-    }
-
-    @Override
-    public String toString() {
-        return "Institution Type: University\n" + super.toString();
     }
 }

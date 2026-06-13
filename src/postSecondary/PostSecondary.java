@@ -5,12 +5,29 @@ import src.application.*;
 import java.util.ArrayList;
 
 public abstract class PostSecondary {
-
     private int id;
     private String name;
 
     private ArrayList<Program> programs;
     private ArrayList<Application> applications;
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(id); sb.append('\n');
+        sb.append(name); sb.append('\n');
+
+        return sb.toString();
+    }
+
+    public ArrayList<Program> getPrograms() {
+        return programs;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -108,20 +125,4 @@ public abstract class PostSecondary {
     }
 
     public abstract boolean evaluateApplication(Application a);
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("Institution ID: "); sb.append(id); sb.append("\n");
-        sb.append("Institution Name: "); sb.append(name); sb.append("\n");
-
-        for (Program p : programs) {
-            sb.append("\n");
-            sb.append(p.toString());
-            sb.append("\n");
-        }
-
-        return sb.toString();
-    }
 }
